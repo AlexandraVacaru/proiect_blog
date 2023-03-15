@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <title>Add blog</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/fontawesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/flex-slider.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/templatemo-stand-blog.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/owl.css}"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+<body>
+
+<div th:insert="navbar :: navbar">  </div>
+
+<section class="contact-us">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="down-contact">
+                    <div class="row">
+                        <div class="sidebar-item contact-form">
+                            <div class="sidebar-heading">
+                                <h2>Add contact info</h2>
+                            </div>
+                            <div class="content">
+                                <form id="blog" th:object="${contactInfo}" th:action="@{/user/contactInfo}" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" th:field="*{contactInfoId}"/>
+                                    <input type="hidden" th:field="*{user}"/>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <fieldset>
+                                                <label for="phoneNumber">Phone number</label>
+                                                <input name="phoneNumber" type="text" id="phoneNumber" placeholder="Phone number" th:field="*{phoneNumber}" th:value="${contactInfo.phoneNumber}">
+                                                <label th:if="${#fields.hasErrors('phoneNumber')}"
+                                                       th:errors="*{phoneNumber}">Error</label>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-12">
+                                            <fieldset>
+                                                <label for="city">City</label>
+                                                <input name="city" type="text" id="city" placeholder="City" th:field="*{city}" th:value="${contactInfo.city}">
+                                                <label th:if="${#fields.hasErrors('city')}"
+                                                       th:errors="*{city}">Error</label>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-12">
+                                            <fieldset>
+                                                <label for="country">Country</label>
+                                                <input name="country" type="text" id="country" placeholder="Country" th:field="*{country}" th:value="${contactInfo.country}">
+                                                <label th:if="${#fields.hasErrors('country')}"
+                                                       th:errors="*{country}">Error</label>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <fieldset>
+                                                <button type="submit" id="form-submit" class="main-button">Add information</button>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" th:src="@{/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.js}"></script>
+<script type="text/javascript" th:src="@{/js/slick.js}"></script>
+<script type="text/javascript" th:src="@{/js/isotope.js}"></script>
+<script type="text/javascript" th:src="@{/js/accordions.js}"></script>
+
+
+</body>
+
+</html>

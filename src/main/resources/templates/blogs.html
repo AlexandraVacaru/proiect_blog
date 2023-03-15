@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <title>Blogs</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/fontawesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/flex-slider.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/templatemo-stand-blog.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/owl.css}"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div th:insert="navbar :: navbar">  </div>
+
+<section class="blog-posts grid-system">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="all-blog-posts">
+                    <div class="row">
+                        <div class="col-lg-6" th:each="blog : ${blogPage.content}">
+                            <div class="blog-post">
+                                <div class="blog-thumb" th:if="${blog.pictures.size()} != 0">
+                                    <img th:src="@{'/blog/getImage/' + ${blog.pictures.get(0).pictureId}}" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <span th:text="${blog.category}"></span>
+                                    <a th:href="@{/blog/{blogId}(blogId=${blog.blogId})}" ><h4 th:text="${blog.title}"></h4></a>
+                                    <ul class="post-info">
+                                        <a th:if="${blog.user} != null" th:href="@{/user/{username}(username=${blog.user.username})}" style="color: #f48840">
+                                            <li th:text="${blog.user.username}"></li>
+                                        </a>
+                                        <li th:text="${blog.date}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" th:if="${searchInput == null} and ${blogSorted == false}">
+                            <ul class="page-numbers">
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination"
+                                     th:each="pageNumber : ${#numbers.sequence(1,T(java.lang.Math).min(7,blogPage.totalPages))}">
+                                    <a th:href="@{/blog/list(size=${blogPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}" th:class="${pageNumber==blogPage.number + 1} ? active"></a>
+                                </li>
+
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination">
+                                    <span th:if="${blogPage.number > 6}"> ... </span>
+                                    <a th:if="${blogPage.number > 6}"
+                                       th:text="${blogPage.number + 1}"
+                                       th:class="active"></a>
+                                </li>
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination" >
+                                    <a th:if="${blogPage.number + 1 < blogPage.totalPages}"
+                                       th:href="@{/blog/list(size=${blogPage.size},page=${blogPage.number+2})}"><i class="fa fa-angle-double-right"></i></a>
+                                    <span th:unless="${blogPage.number + 1 < blogPage.totalPages}"><i class="fa fa-angle-double-right"></i></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-12" th:if="${searchInput != null} and ${blogSorted == false}">
+                            <ul class="page-numbers">
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination"
+                                    th:each="pageNumber : ${#numbers.sequence(1,T(java.lang.Math).min(7,blogPage.totalPages))}">
+                                    <a th:href="@{/blog/search(searchInput=${searchInput},size=${blogPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}" th:class="${pageNumber==blogPage.number + 1} ? active"></a>
+                                </li>
+
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination">
+                                    <span th:if="${blogPage.number > 6}"> ... </span>
+                                    <a th:if="${blogPage.number > 6}"
+                                       th:text="${blogPage.number + 1}"
+                                       th:class="active"></a>
+                                </li>
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination" >
+                                    <a th:if="${blogPage.number + 1 < blogPage.totalPages}"
+                                       th:href="@{/blog/search(searchInput=${searchInput},size=${blogPage.size},page=${blogPage.number+2})}"><i class="fa fa-angle-double-right"></i></a>
+                                    <span th:unless="${blogPage.number + 1 < blogPage.totalPages}"><i class="fa fa-angle-double-right"></i></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-12" th:if="${blogSorted == true}">
+                            <ul class="page-numbers">
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination"
+                                    th:each="pageNumber : ${#numbers.sequence(1,T(java.lang.Math).min(7,blogPage.totalPages))}">
+                                    <a th:href="@{/blog/list/sort(sortBy='title', size=${blogPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}" th:class="${pageNumber==blogPage.number + 1} ? active"></a>
+                                </li>
+
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination">
+                                    <span th:if="${blogPage.number > 6}"> ... </span>
+                                    <a th:if="${blogPage.number > 6}"
+                                       th:text="${blogPage.number + 1}"
+                                       th:class="active"></a>
+                                </li>
+                                <li th:if="${blogPage.totalPages > 0}" class="pagination" >
+                                    <a th:if="${blogPage.number + 1 < blogPage.totalPages}"
+                                       th:href="@{/blog/list/sort(sortBy='title', size=${blogPage.size},page=${blogPage.number+2})}"><i class="fa fa-angle-double-right"></i></a>
+                                    <span th:unless="${blogPage.number + 1 < blogPage.totalPages}"><i class="fa fa-angle-double-right"></i></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="row">
+                        <div class="col-lg-12" sec:authorize="isAuthenticated()">
+                            <div class="sidebar-item recent-posts" style="margin-top: 0px;">
+                                <div class="sidebar-heading">
+                                    <a th:href="@{/blog/new}"><h2 style="color: #f48840";>Add blog</h2></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item recent-posts" style="margin-top: 0px;">
+                                <div class="sidebar-heading">
+                                    <a th:href="@{/blog/list/sort(sortBy='title')}"><h2 style="color: #f48840";>Sort by title</h2></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item search">
+                                <form id="search_form" th:action="@{/blog/search}">
+                                    <input type="text" th:name="searchInput" th:value="${searchInput}"
+                                           class="searchText" placeholder="type to search..." autocomplete="on">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item recent-posts">
+                                <div class="sidebar-heading">
+                                    <h2>Recent Posts</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <li><a th:href="@{/blog/{blogId}(blogId=${lastBlog.blogId})}" th:each="lastBlog : ${lastPosted}">
+                                            <h5 th:text="${lastBlog.title}"></h5>
+                                            <span th:text="${lastBlog.date}"></span>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item categories">
+                                <div class="sidebar-heading">
+                                    <h2>Categories</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <li th:each="categoryOption:${T(com.example.proiect.model.CategoryEnum).values()}">
+                                            <a href="#" th:text="${categoryOption.name()}"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript" th:src="@{/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.js}"></script>
+<script type="text/javascript" th:src="@{/js/slick.js}"></script>
+<script type="text/javascript" th:src="@{/js/isotope.js}"></script>
+<script type="text/javascript" th:src="@{/js/accordions.js}"></script>
+
+</body>
+</html>

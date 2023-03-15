@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/fontawesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/flex-slider.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/templatemo-stand-blog.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/owl.css}"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div th:insert="navbar :: navbar">  </div>
+
+<form th:action="@{/user/save}" th:object="${user}"
+      method="post" style="max-width: 600px; margin: 0 auto;">
+    <input type="hidden" th:field="*{userId}" />
+    <input type="hidden" th:field="*{password}" />
+    <input type="hidden" th:field="*{picture}" />
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label">E-mail: </label>
+            <div class="col-8">
+                <input readonly="readonly" type="email" th:field="*{email}" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Username: </label>
+            <div class="col-8">
+                <input readonly="readonly" type="text" th:field="*{username}" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">First Name: </label>
+            <div class="col-8">
+                <input readonly="readonly" type="text" th:field="*{firstName}" class="form-control"
+                       required minlength="2" maxlength="20"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Last Name: </label>
+            <div class="col-8">
+                <input readonly="readonly" type="text" th:field="*{lastName}" class="form-control"
+                       required minlength="2" maxlength="20" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Roles: </label>
+            <div class="col-8">
+                <th:block th:each="role: ${listRoles}">
+                    <input type="checkbox" th:field="*{roles}"
+                           th:text="${role.name}" th:value="${role.roleId}" class="m-2" />
+                </th:block>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" th:src="@{/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.js}"></script>
+<script type="text/javascript" th:src="@{/js/slick.js}"></script>
+<script type="text/javascript" th:src="@{/js/isotope.js}"></script>
+<script type="text/javascript" th:src="@{/js/accordions.js}"></script>
+
+</body>
+</html>

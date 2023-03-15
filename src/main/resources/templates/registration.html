@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <title>Create an account</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/fontawesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/flex-slider.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/templatemo-stand-blog.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/owl.css}"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">-->
+</head>
+
+<body>
+
+<div th:insert="navbar :: navbar">  </div>
+
+    <div class="container h-100">
+        <div class="row h-100">
+            <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+                <div class="d-table-cell align-middle">
+
+                    <div class="text-center mt-4">
+                        <h1 class="h2">Welcome to A-blogs</h1>
+                        <p class="lead"> Create your account</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="m-sm-4">
+                                <form method="POST" class="form-signin" th:object="${userForm}" th:action="@{/registration}">
+                                    <div class="form-group">
+                                        <label>Username</label>
+                                        <input class="form-control form-control-lg" type="text" name="username"
+                                               th:field="*{username}"
+                                               placeholder="Username">
+                                        <label th:if="${#fields.hasErrors('username')}"
+                                               th:errors="*{username}">Error</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input class="form-control form-control-lg" type="text" th:field="*{email}"
+                                               name="email"
+                                               placeholder="Email">
+                                        <label th:if="${#fields.hasErrors('email')}"
+                                               th:errors="*{email}">Error</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input class="form-control form-control-lg" type="password" th:field="*{password}"
+                                               name="password"
+                                               placeholder="Enter password">
+                                        <label th:if="${#fields.hasErrors('password')}"
+                                               th:errors="*{password}">Error</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>BirthDate</label>
+                                        <input class="form-control form-control-lg" type="date" th:field="*{birthDate}"
+                                               name="birthDate"
+                                               placeholder="Birth Date">
+                                        <span class="has-error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Last name</label>
+                                        <input type="text" class="form-control form-control-lg" th:field="*{lastName}"
+                                               placeholder="Last name" name="lastName">
+                                        <span class="has-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>First name</label>
+                                        <input type="text" th:field="*{firstName}" class="form-control form-control-lg" placeholder="First name"
+                                               autofocus="true" name="firstName">
+                                        <span class="has-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>User picture</label>
+                                        <input type="text" th:field="*{picture}" class="form-control form-control-lg" placeholder="Picture"
+                                               autofocus="true" name="picture">
+                                        <span class="has-error" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></span>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                         <button type="submit" class="btn btn-lg btn-primary">Sign up</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" th:src="@{/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.js}"></script>
+<script type="text/javascript" th:src="@{/js/slick.js}"></script>
+<script type="text/javascript" th:src="@{/js/isotope.js}"></script>
+<script type="text/javascript" th:src="@{/js/accordions.js}"></script>
+
+
+</body>
+
+<style>
+
+    .card {
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+    }
+
+    .card {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid #e5e9f2;
+        border-radius: .2rem;
+    }
+</style>
+
+</html>

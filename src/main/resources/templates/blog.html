@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <title>Blogs</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/fontawesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/flex-slider.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/templatemo-stand-blog.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/owl.css}"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+
+</head>
+
+<style>
+    * {box-sizing: border-box}
+    body {font-family: Verdana, sans-serif; margin:0}
+    .mySlides {display: none}
+    img {vertical-align: middle;}
+
+    /* Slideshow container */
+    .slideshow-container {
+        max-width: 1000px;
+        position: relative;
+        margin: auto;
+    }
+
+    .fade:not(.show) {
+        opacity: 100%;
+    }
+
+    /* Next & previous buttons */
+    .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover, .next:hover {
+        background-color: rgba(0,0,0,0.8);
+    }
+
+    /* The dots/bullets/indicators */
+    .dot {
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+    }
+
+    .dot:hover {
+        background-color: #717171;
+    }
+
+    /* Fading animation */
+    .fade {
+        animation-name: fade;
+        animation-duration: 1.5s;
+    }
+
+    @keyframes fade {
+        from {opacity: .4}
+        to {opacity: 1}
+    }
+
+    /* On smaller screens, decrease text size */
+    @media only screen and (max-width: 300px) {
+        .prev, .next,.text {font-size: 11px}
+    }
+</style>
+<body>
+
+
+<div th:insert="navbar :: navbar">  </div>
+
+<section class="blog-posts grid-system">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="all-blog-posts">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="blog-post">
+                                <div class="blog-thumb" th:if="${blog.pictures} != null and ${blog.pictures.size()} != 0">
+                                    <div class="main-banner header-text">
+                                        <div class="container-fluid">
+
+                                            <div class="slideshow-container">
+                                                <div class="mySlides fade" th:each="picture : ${blog.pictures}">
+                                                    <img th:src="@{'/blog/getImage/' + ${picture.pictureId}}" style="width:100%">
+                                                </div>
+                                                <a class="prev" onclick="plusSlides(-1)">❮</a>
+                                                <a class="next" onclick="plusSlides(1)">❯</a>
+                                            </div>
+                                            <br>
+
+                                            <div style="text-align:center">
+                                                <span class="dot" th:each="picture, iStat : ${blog.pictures}"
+                                                      th:onclick="|currentSlide(${iStat.index + 1})|"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="down-content">
+                                    <span th:text="${blog.category}"></span>
+                                    <h4 th:text="${blog.title}"></h4>
+                                    <ul class="post-info" th:if="${blog.user} != null">
+                                        <li><a th:href="@{/user/{username}(username=${blog.user.username})}" style="color: #f48840" th:text="${blog.user.username}"></a></li>
+                                        <li><a th:text="${blog.getFormattedDate()}" href="#"></a></li>
+                                        <li><a th:text="|${@blogService.getNoLikes(blog.blogId)} likes|" href="#"></a></li>
+                                    </ul>
+                                    <p th:text="${blog.content}"></p>
+                                    <div class="post-options">
+                                        <div class="row">
+
+                                            <div class="col-6" th:if=" ${blog.user != null} and ${#authentication.getName()} != ${blog.user.username} and ${@blogService.isLiked(blog.blogId, #authentication.getName())} == false">
+                                                <ul class="post-tags" >
+                                                    <li><i class="fa fa-heart"></i></li>
+                                                    <li><a th:href="@{/like/{blogId}/user/{username}(blogId=${blog.blogId},username=${#authentication.getName()})}">Like</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-6" th:if="${blog.user != null} and ${#authentication.getName()} != ${blog.user.username} and ${@blogService.isLiked(blog.blogId, #authentication.getName())} == true">
+                                                <ul class="post-tags" >
+                                                    <li><i class="fa fa-heart-o"></i></li>
+                                                    <li><a th:href="@{/removeLike/{blogId}/user/{username}(blogId=${blog.blogId},username=${#authentication.getName()})}">Remove like</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-6">
+                                                <ul class="post-tags" th:if="${blog.user != null} and ${#authentication.getName()} == ${blog.user.username}">
+                                                    <li><i class="fa fa-trash"></i></li>
+                                                    <li><a th:href="@{/blog/delete/{blogId}(blogId=${blog.blogId}, username=${#authentication.getName()})}">Delete</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-6">
+                                                <ul class="post-tags" th:if="${blog.user != null} and ${#authentication.getName()} == ${blog.user.username}">
+                                                    <li><i class="fa fa-edit"></i></li>
+                                                    <li><a th:href="@{/blog/edit/{blogId}(blogId=${blog.blogId})}">Edit</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-6">
+                                                <ul class="post-tags" th:if="${blog.user != null} and ${#authentication.getName()} == ${blog.user.username}">
+                                                    <li><i class="fa fa-edit"></i></li>
+                                                    <li><a th:href="@{/blog/editPictures/{blogId}(blogId=${blog.blogId})}">Edit Pictures</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item comments">
+                                <div class="sidebar-heading">
+                                    <h2 th:text="|${blog.comments.size()} comments|"></h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <div class="row"
+                                             th:each="blogComment : ${blog.comments}"
+                                             style="margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 30px;">
+                                            <li>
+                                                <div class="author-thumb">
+                                                    <img th:src="@{${blogComment.user.picture}}" alt="">
+                                                </div>
+                                                <div class="right-content">
+                                                    <h4 th:text="${blogComment.user.username}"></h4>
+                                                    <span th:text="${blogComment.date}"></span>
+                                                    <p th:text="${blogComment.content}"></p>
+                                                    <ul class="post-tags" th:if="${#authentication.getName()} == ${blogComment.user.username} or ${#request.isUserInRole('ADMIN')}">
+                                                        <li><i class="fa fa-trash"></i></li>
+                                                        <li><a th:href="@{/comment/delete/{commentId}(commentId=${blogComment.commentId},blogId=${blog.blogId},username=${blogComment.user.username})}" style="color: #f48840">Delete comment</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </li>
+                                        </div>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item submit-comment">
+                                <div class="sidebar-heading">
+                                    <h2>Your comment</h2>
+                                </div>
+                                <div class="content">
+                                    <form id="comment" action="#" method="post" th:object="${comment}"
+                                          th:action="@{/comment/{blogId}/user/{username}(blogId=${blog.blogId}, username=${#authentication.getName()})}">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <fieldset>
+                                                    <textarea name="content" rows="6" id="content" placeholder="Type your comment" th:field="*{content}"></textarea>
+                                                    <label th:if="${#fields.hasErrors('content')}"
+                                                           th:errors="*{content}">Error</label>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <fieldset>
+                                                    <button type="submit" id="form-submit" class="main-button">Submit</button>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="sidebar-item search">
+                                <form id="search_form" th:action="@{/blog/search}">
+                                    <input type="text" th:name="searchInput" class="searchText" placeholder="type to search..." autocomplete="on">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item recent-posts">
+                                <div class="sidebar-heading">
+                                    <h2>Recent Posts</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <li><a th:href="@{/blog/{blogId}(blogId=${lastBlog.blogId})}" th:each="lastBlog : ${lastPosted}">
+                                            <h5 th:text="${lastBlog.title}"></h5>
+                                            <span th:text="${lastBlog.date}"></span>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item categories">
+                                <div class="sidebar-heading">
+                                    <h2>Categories</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <li th:each="categoryOption:${T(com.example.proiect.model.CategoryEnum).values()}">
+                                            <a href="#" th:text="${categoryOption.name()}"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript" th:src="@{/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.js}"></script>
+<script type="text/javascript" th:src="@{/js/slick.js}"></script>
+<script type="text/javascript" th:src="@{/js/isotope.js}"></script>
+<script type="text/javascript" th:src="@{/js/accordions.js}"></script>
+
+<script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " active";
+    }
+</script>
+
+</body>
+
+
+
+</html>
